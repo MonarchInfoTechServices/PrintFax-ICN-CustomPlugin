@@ -16,28 +16,30 @@ define([
 		
 		
 		postCreate:function(){
-			
+
 			console.log("Hi I am in action js11111111111111111111");
-			
-			  this.inherited(arguments);
-			
+
+			this.inherited(arguments);
+
 		},
-		
-		   performAction: function(repository,itemList,listType,teamspace,resultSet,items)
-	        {
-	        	try{   
-	        		
-	        		console.log("in performAction")
-      
-       var opendialog= new OpeningDialogbox();
+
+		performAction: function(repository,itemList,listType,teamspace,resultSet,items)
+		{
+			try{   
+
+				console.log("in performAction")
+
+				var opendialog= new OpeningDialogbox();
+
+
    	
-      
-   	
-       opendialog.show(items, repository);
+       opendialog.show(items, repository,itemList);
        opendialog.setSize(800, 600);
  
 
        opendialog.setResizable(true);
+       
+      
        
        
        opendialog.setTitle("Print/Fax Dialog");

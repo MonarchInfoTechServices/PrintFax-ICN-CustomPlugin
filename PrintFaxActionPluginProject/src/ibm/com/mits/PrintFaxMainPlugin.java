@@ -193,20 +193,6 @@ public class PrintFaxMainPlugin extends Plugin {
 	}
 
 	/**
-	 * Provides a list of services that are provided by this plug-in. The
-	 * services run on the web server, and can be called by the web browser
-	 * logic component of the plug-in.
-	 * 
-	 * @return An array of {@link com.ibm.ecm.extension.PluginService
-	 *         PluginService} objects. The plug-in should return the same set of
-	 *         objects on every call. If there are no services defined by the
-	 *         plug-in, the call should return an empty array.
-	 */
-	public PluginService[] getServices() {
-		return new PluginService[0];
-	}
-
-	/**
 	 * Provides a custom service used for Content Manager OnDemand single
 	 * sign-on (SSO). This is an optional service that will be called when SSO
 	 * is enabled on a Content Manager OnDemand server. The result of the
@@ -313,6 +299,20 @@ public class PrintFaxMainPlugin extends Plugin {
 	 */
 	public com.ibm.ecm.extension.PluginAction[] getActions() {
 		return new com.ibm.ecm.extension.PluginAction[]{new ibm.com.mits.PrintFaxActionPlugin()};
+	}
+
+	/**
+	 * Provides a list of services that are provided by this plug-in. The
+	 * services run on the web server, and can be called by the web browser
+	 * logic component of the plug-in.
+	 * 
+	 * @return An array of {@link com.ibm.ecm.extension.PluginService
+	 *         PluginService} objects. The plug-in should return the same set of
+	 *         objects on every call. If there are no services defined by the
+	 *         plug-in, the call should return an empty array.
+	 */
+	public com.ibm.ecm.extension.PluginService[] getServices() {
+		return new com.ibm.ecm.extension.PluginService[]{new ibm.com.mits.PrintFaxservicePlugin(), new ibm.com.mits.PageNumberCountService()};
 	}
 	
 }

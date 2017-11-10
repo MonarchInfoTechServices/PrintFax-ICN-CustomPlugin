@@ -8,20 +8,31 @@ define([
 "dojo/dom-style",
 "dojo/on",
 "dojo/dom",
+"dojo/json",
 "dijit/registry",
 "dojo/data/ObjectStore",
 "dojox/collections/ArrayList",
 "dijit/form/CheckBox",
 "dijit/form/TextBox",
 "dojo/store/Memory", "dijit/form/ComboBox",
+"dojo/_base/array",
+"ecm/model/Request",
+"ecm/model/Desktop",
 "dijit/_WidgetsInTemplateMixin",
 "dojo/text!printFaxMainPluginDojo/templates/PrintFaxplugin.html",
+"dojo/text!printFaxMainPluginDojo/json/Jsondata.json",
+
 "dojo/domReady!"
 	],
-	function(declare,BaseDialog,_TemplatedMixin,_WidgetBase,domStyle,on,dom,registry,ObjectStore,ArrayList,CheckBox,TextBox,Memory,ComboBox,_WidgetsInTemplateMixin,template) {
+	function(declare,BaseDialog,_TemplatedMixin,_WidgetBase,domStyle,on,dom,json,registry,ObjectStore,ArrayList,CheckBox,TextBox,Memory,ComboBox,array,Request,Desktop,_WidgetsInTemplateMixin,template,jsonData) {
      var th;
      var checkbox1;
-     var checkboxvalue;
+     var documentid;
+     var myTextBox;
+     var lastTextBox ;
+     var pagecountvalue;
+  
+   
  	
 		return declare("printFaxMainPluginDojo.OpeningDialogbox", [_WidgetBase,_TemplatedMixin,BaseDialog,_WidgetsInTemplateMixin], {
 		
@@ -31,6 +42,9 @@ define([
 			
 
 		postCreate:function(){
+			
+		
+			
 			
 			
 			
@@ -52,12 +66,12 @@ define([
 			
 			console.log("in destroy")
 			  this.destroyDescendants();
-
+		
 			 },
 		
-		 show: function(items, repository) {
+		 show: function(items, repository,itemList) {
 			 
-		
+		try{
              this.inherited(arguments);
              this._widgetList = [];
              
@@ -67,27 +81,46 @@ define([
          
 
           
+          var serviceParams = {};
           
           
+          
+          var response = Request.invokeSynchronousPluginService("PrintFaxMainPlugin", "PrintFaxservicePlugin",serviceParams);
+          
+          
+          
+          console.log("response",response)
+          
+          
+
+
+          
+var responsedata=response.result;
+          
+          console.log("responsedata",responsedata)
           
           
           var printerstore = new Memory({
-              data: [
-                  {name:"Microsoft XPS Document Writer", id:"printrequest"},
-                  {name:"FaxDev", id:"faxtype"},
-                 
-              ]
+              data: responsedata
           }); 
-             
+          
+        
+          
+        
+     
           var comboBox = new ComboBox({
+        	  
+        	  id:"cId",
+        	  
+        	  value: "Dev Print Server",
               name: "print/fax Name",
-              value: "Microsoft XPS Document Writer",
-              store: printerstore,
+             
+              store: printerstore
               
-              searchAttr: "name"
           }, PrinterDiv); 
              
-          
+         
+          console.log("the combobox",comboBox);
      
           domStyle.set(th.faxoptiondiv,"display", "none");
           
@@ -100,7 +133,7 @@ define([
 				 console.log("activityObj.oc:::::",typerequest);
 				 
 				 
-				 if(typerequest =="FaxDev")
+				 if(typerequest=="DEV Fax Server")
 					 {
 				
 				 
@@ -128,17 +161,23 @@ define([
 			 });
           
           
+          console.log(jsonData,":::jsonData");
+			
+			
+			var jsonobject =json.parse(jsonData);
+			var jsonfields=jsonobject.PaperSizeproperties;	
+			var jsonfields1=jsonobject.qualityproperties;	
+			console.log("jsonfields:::::::::",fields1[0]);
+          
           
           var papersizetype= this.papersize;
 			 
 			 console.log("in papersize",papersizetype)
 			 
+			 
+			 
 			 var papersizestore = new Memory({
-	              data: [
-	                  {name:"Global Default", id:"Defaultpapersize"},
-	                  {name:"Letter(8.5\"*11\")", id:"letter"},
-	                 
-	              ]
+	              data:jsonobject.PaperSizeproperties
 	          }); 
 	             
 	          var papersizecombobox = new ComboBox({
@@ -155,11 +194,7 @@ define([
 			   
 			   
 			  var qualitystore = new Memory({
-	              data: [
-	                  {name:"Normal 240dpi\*98dpi", id:"normal"},
-	                  {name:"fine 204\*196", id:"fine"},
-	                 
-	              ]
+	              data: jsonobject.qualityproperties
 	          }); 
 	             
 	          var qualitycombobox = new ComboBox({
@@ -302,8 +337,107 @@ define([
 	          
 	          
 	          
-			 
-          
+	          
+	          var serviceParams1 = {};
+	          
+	          var repositoryId =repositoryId;
+				
+				
+	  var defalutRep=Desktop.getDefaultRepository();
+	 
+	   repositoryId=defalutRep.repositoryId;
+	   
+	   console.log("repositoryId is",repositoryId);
+	   
+	   for(var i=0;i<itemList.length;i++){
+	   
+		   var mimetype=itemList[i]. mimetype;
+		   
+		   console.log(" mimetype",mimetype)
+		   
+		   if(mimetype == "image/tiff"){
+
+		   	console.log("in if")
+	 
+	           documentid= itemList[i].docid;
+	          
+		   }
+	
+
+	          
+	          console.log("documentid",documentid)
+	   
+	   }
+	   
+	   
+	   
+	   serviceParams1.repositoryId = repositoryId;
+
+		serviceParams1.documentid=documentid;
+		
+		
+		Request.invokePluginService("PrintFaxMainPlugin", "PageNumberCount" ,{
+			
+			requestParams:serviceParams1,
+			
+			requestCompleteCallback:function(response){
+				
+				console.log("response :",response.result);
+				
+				pagecountvalue=response.result[0].docPagecount;
+				console.log("pagecountvalue :",pagecountvalue);
+				
+			},
+			requestFailedCallback:function(response){
+				 console.log("Entered the requestFailedCallback");
+			}
+			
+		});
+	          
+	          
+	          
+	          
+	          
+	           	checkboxarray= [];
+	           	starttextbox=[];
+	           	lasttextboxarray=[];
+	          
+	      
+	          
+	          console.log("itemList",itemList.length);
+	           	docsarray= [];
+	          
+	          for(var i=0;i<itemList.length;i++){
+	        	  
+	        	  console.log("in for loop")
+	        	console.log("itemlist",  itemList[i].name)
+	        	       
+	        	
+	        	docsarray.push(itemList[i].name);
+
+	        	        	console.log("docsarray",docsarray)
+	        	  
+	          }
+	          console.log("var docsarray", docsarray)
+
+	var jsonArray=[];
+
+for (var i = 0 ; i < docsarray.length; i++) {
+	var jsonObj = {};
+	
+
+	jsonObj["id"] = i+1;
+
+  jsonObj["name"] = docsarray[i];
+
+
+
+jsonArray.push(jsonObj);
+
+} 
+	          console.log("jsonobj",jsonObj)
+	          
+	     
           
 	          var documentgrid=this.gridid;
 	          
@@ -313,13 +447,7 @@ define([
 	          
 	          
 	          var documentsmemory = new Memory({
-	              data: [ 
-	                     {name:"Demo Test Batch", id:"document"},
-	                     {name:"Demo Test Batch", id:"document"},
-	                     {name:"Demo Test Batch", id:"document"},
-	                 
-	                 
-	              ]
+	              data: jsonArray
 	          }); 
 	          
 	          
@@ -334,49 +462,108 @@ define([
 					 styles : "text-align: center;"
 				}, {
 					name : 'Name',
-					field : 'property',
+					field : 'name',
 					'width' : '240px',
 					 styles : "text-align: center;"
+						 
+						 
+						 
+						 
+						 
+						 
+						 
+						 
 				}, {
 					name : 'All Pages',
 					field : 'property',
 					'width' : '100px',
 					 styles : "text-align: center;",
-					 'formatter': function(data){
-		                    checkbox1 = new CheckBox({
-		                    	id:checkboxvalue+count++,
-		                    	
+				
+					 
+					 
+					 
+					 
+					  'formatter': function(data,ItemList){
+						
+		                   checkbox1 = new CheckBox({
+		                   
+		                    	disabled:true,
 		                    	name:"allpagesvalue",
 		                    	label: "checkbox",
 		                    	checked: true,
-		                    	disabled:true,
-		                        onClick: function() {
-		                       console.log("in checkbox");
-		                        }
-		                    });
-		                    
-		                    
-		                    
-		                  
-		                   console.log("ID Values:::::" , checkbox1);
-		                    
-		                    return checkbox1;
 		                   
+		                        onClick: function() {
+		                      
+		                       var checkboxid =ItemList;
+		                       
+		                       
+		                       
+		                       
+		                       console.log("in checkbox",this.checked);
+		                       
+		                       if(this.checked==false)  {
+
+		   		             
+
+		   		        	  
+		   		        	       starttextbox[checkboxid].set("disabled",false);
+		   		        	       
+		   		        	    lasttextboxarray[checkboxid].set("disabled",false);
+
+		   		        	       console.log("after starttextbox disabled")
+		   		               	
+		   		         
+
+		   		               }  else{
+		   		            	   
+		   		            	   
+		   		            
+			   		        	  
+		   		        	       starttextbox[checkboxid].set("disabled",true);
+		   		        	    lasttextboxarray[checkboxid].set("disabled",true);
+		   		        	       
+		   		        	    console.log("after starttextbox disabled true")
+		   		            	   
+		   		            	   
+		   		               }    
+		   		                   
+		                      
+		                       
+		                       
+		                       
+		                        }
+		                   
+		                   
+		                   
+		                    });
+	        	checkboxarray.push(checkbox1);
+	        	
+	        	
+	        	console.log("checkboxarray",checkboxarray)
+	        	
+	        
+
+   
+		                    return checkbox1;
+	        	
+	        
+
 		                   
 		                }
 				
 				
-				
-			
 					 
-				},{
+				},
+				
+				{
 					name: 'Start Page',
 					'field' : 'classdescription',
 					'width' : '110px',
 					 styles : "text-align: center;",
 					'formatter': function(data){
-	                  var myTextBox  = new TextBox({
-	                    	
+						
+	                   myTextBox  = new TextBox({
+	                	 
 	                    	label: "TextBox",
 	                    	style: {width: '30%',height:'15px'},
 	                    	  value: "1",
@@ -387,7 +574,15 @@ define([
 	                        }
 	                    });
 	                    
+	                  
+	                  starttextbox.push(myTextBox);
+	                  
+	                  console.log("myTextBox",starttextbox)
 	                    return myTextBox;
+	                    
+
+	             
+	                   
 	                   
 	                }
 						
@@ -403,21 +598,58 @@ define([
 					'width' : '110px',
 						 styles : "text-align: center;",
 						 'formatter': function(data){
-			                    var lastTextBox  = new TextBox({
+							 
+							 
+							 if(mimetype == "image/tiff"){
+								 
+							console.log("in if")
+			                     lastTextBox  = new TextBox({
 			                    	label: "lastTextBox",
-			                    	  value: "9999",
+			                    	
 			                    	  disabled:true,
-			                    	style: {width: '30%',height:'15px'},
+			                    	  value:pagecountvalue,
+			                    	  
+			                     	style: {width: '30%',height:'15px'},
+			                     	
 			                        onClick: function() {
 			                       console.log("in lastTextBox");
 			                        }
+			                     	
 			                    });
 			                    
+			                    
+			                    lasttextboxarray.push(lastTextBox);
 			                    return lastTextBox;
-			                   
+							 }
+							 else
+								 {
+								 
+								 console.log("in else")
+								 lastTextBoxforpdf  = new TextBox({
+				                    	label: "lastTextBox",
+				                    	value:"9999",
+				                    	  disabled:true,
+				                    	  
+				                     	style: {width: '30%',height:'15px'},
+				                     	
+				                        onClick: function() {
+				                       console.log("in lastTextBox");
+				                        }
+				                     	
+				                    });
+								 
+								 
+								 return lastTextBoxforpdf;
+								 
+								 
+								 
+								 }
 			                }
 				}
 				] ;
+	          
+	          
+	        
 	          
 	          console.log("layout",layout);
 	          
@@ -432,22 +664,65 @@ define([
 	          grid.startup();
 	         
 	          console.log("end of gridgrid",grid);
+	          
+	           
+		}catch(e){
+			
+			console.log("",e);
+			
+			
+			
+		}
          },
          
          
          onchangeradio:function()
         { 
+        	 
+        	 
+        	 
+        	 
+ console.log("on changeradio",this.allpages)
+        	 
+        	 var value=this.allpages.checked;
         	
-        	 
-        	 
-        	 console.log("checkbox1",checkbox1)
-        	 
+     if(value==true)   	 
+
+{
+ for(var i=0;i<checkboxarray.length;i++){
+	        	  
+	   checkboxarray[i].set("disabled",true);
+	   checkboxarray[i].set("checked",true);
+	   starttextbox[i].set("disabled",true);
+	   lasttextboxarray[i].set("disabled",true);
+ 
+	   starttextbox[i].set("value",1);
+	   lasttextboxarray[i].set("value",9999);
+	        
+	          }
+
+
+}else{
+
+	for(var i=0;i<checkboxarray.length;i++){
+	        	  
+	        	       checkboxarray[i].set("disabled",false);
+
+	          }
+
+}
+     
+
         },
+        
+        
+        
+       
          
          submit:function()
          {
         	 
-        	 
+        	 console.log("in submit function")
         	 
         	  
          },
@@ -458,3 +733,5 @@ define([
          
 	});
 });
+
+

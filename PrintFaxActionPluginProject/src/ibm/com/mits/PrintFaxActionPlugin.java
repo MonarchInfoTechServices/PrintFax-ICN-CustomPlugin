@@ -76,7 +76,7 @@ public class PrintFaxActionPlugin extends PluginAction {
 	 *         multiple documents are selected.
 	 */
 	public boolean isMultiDoc() {
-		return false;
+		return true;
 	}
 
 	/**
