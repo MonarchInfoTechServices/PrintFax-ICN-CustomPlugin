@@ -1,0 +1,165 @@
+<div>
+<div>
+<table width="500px" border="0">
+
+
+
+<tr><td>Printer/Fax Name:
+<td align="left">
+
+
+<div data-dojo-attach-point="requesttype"  ></div>
+
+</tr></td>
+
+<tr><td >Paper Size:
+<td align="left">
+
+
+<div data-dojo-attach-point="papersize"  ></div>
+
+
+
+</td></tr>
+
+
+<tr><td>Annotation:
+<td align="left"><input data-dojo-attach-point="Annotation"  type="checkbox"  data-dojo-type="dijit/form/CheckBox" checked>
+
+
+
+</td></tr>
+</table>
+</div>
+<div>
+<fieldset style="border:1px solid #ccc;"><legend>Print Range</legend>
+
+	 <table><tr><td><input type="radio" data-dojo-type="dijit/form/RadioButton" name="pages" data-dojo-attach-point="allpages" checked data-dojo-attach-event="onChange:onchangeradio" /> <label for="allpages">All Pages</label> <br />
+    </td><td><input type="radio" data-dojo-type="dijit/form/RadioButton" name="pages" data-dojo-attach-point="SelectedPages"  /> <label for="SelectedPages">Selected Pages</label> </td></tr></table>
+ 
+
+
+<div data-dojo-attach-point="gridid"  ></div>
+  
+   
+
+</fieldset><br/>
+</div>
+
+
+
+<div data-dojo-attach-point = "faxoptiondiv"> 
+	
+<div   style="background:#d3d3d3;font-size:16px; color:#000;">Fax Option</div>
+
+<table width="100%" border="0">
+<tr><td>CoverPage:
+<td width="75%" align="left"><input data-dojo-attach-point="CoverPage"  type="checkbox"  data-dojo-type="dijit/form/CheckBox" checked>
+
+
+<td width="15%">Quality:
+<td align="left">
+<div data-dojo-attach-point="quality"  ></div>
+
+<tr><td>Fax To No:</span></td>
+<td ><input data-dojo-attach-point="faxto" name="faxto"  data-dojo-type="dijit.form.ValidationTextBox" data-dojo-props="required: true, invalidMessage:'Please enter Value'"/><span style="color:red">*
+</td>
+ <td>From:</td>
+<td ><input data-dojo-attach-point="faxfrom" name="faxfrom" data-dojo-type="dijit.form.ValidationTextBox"  />
+</td>
+</tr>
+  <tr>
+  <td >To:</td>
+<td ><input data-dojo-attach-point="to" name="to"  data-dojo-type="dijit.form.ValidationTextBox" data-dojo-props="required: true, invalidMessage:'Please enter Value'" /><span style="color:red">*</span>
+</td>
+  
+  <td>Phone No:</td>
+<td ><input data-dojo-attach-point="phoneno" name="phoneno" data-dojo-type="dijit.form.ValidationTextBox"  />
+</td>
+  
+ </tr>
+ 
+ 
+ <tr>
+ 
+ <td >Company:</td>
+<td ><input data-dojo-attach-point="company" name="company" data-dojo-type="dijit.form.ValidationTextBox"  />
+</td>
+  
+  <td>Fax No:</td>
+<td ><input data-dojo-attach-point="faxno" name="faxno" data-dojo-type="dijit.form.ValidationTextBox"  />
+</td>
+ 
+ 
+ </tr>
+ 
+<tr>
+  <td>Notes:</td>
+
+
+<td colspan="3"><textarea  data-dojo-attach-point="notes" name="notes" style="margin-top:5px !important;width:98%;" data-dojo-type="dijit/form/SimpleTextarea" rows="3" cols="81" style="width:auto;"></textarea></td>
+
+</tr>
+
+</table>
+
+
+</div>
+
+
+<div data-dojo-attach-point = "printoptiondiv"> 
+
+<div   style="background:#d3d3d3;font-size:16px;padding:4px; margin-bottom:5px; color:#000;">Print Option</div>
+
+<table width="100%" border="0">
+
+
+
+
+<tr><td width="15%" >Eject tray:
+<td align="left">
+<div data-dojo-attach-point="ejecttray"  ></div>
+</td></tr>
+
+<tr><td>Orientation:</td>
+<td ><div data-dojo-attach-point="orientation"  ></div>
+</td>
+ <td>Collate:</td>
+ <td align="left"><input data-dojo-attach-point="collate"  type="checkbox"  data-dojo-type="dijit/form/CheckBox" >
+
+</td>
+</tr>
+  <tr>
+  <td >Scaling:</td>
+<td ><div data-dojo-attach-point="scaling"  ></div>
+</td>
+  
+  <td>Copies:</td>
+<td ><div data-dojo-attach-point="copies"  ></div>
+</td>
+  
+ </tr>
+ 
+ 
+ <tr>
+ 
+ <td >Priority:</td>
+<td ><div data-dojo-attach-point="priority"  ></div>
+</td>
+  
+  <td>Print Time:</td>
+<td ><input data-dojo-attach-point="printtime" name="printtime" data-dojo-type="dijit.form.ValidationTextBox"  />
+</td>
+ 
+ 
+ </tr>
+ 
+
+
+</table>
+
+</div>
+
+
+
+</div>

@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<project name="PrintFaxActionPlugin" default="all" basedir=".">
+
+	<target name="all" depends="clean,compile,jar" />
+
+	<path id="classpath">
+		<pathelement location="./lib/navigatorAPI.jar" />
+		<pathelement location="./lib/j2ee.jar" />
+	<pathelement location="./lib/sqljdbc4.jar" />
+	<pathelement location="./lib/jai_codec-1.1.3.jar" />
+<pathelement location="./lib/Jace.jar" />
+<pathelement location="./lib/log4j.jar" />
+<pathelement location="./lib/stax-api.jar" />
+	<pathelement location="./lib/xlxpScanner.jar" />
+<pathelement location="./lib/xlxpScannerUtils.jar" />
+		<pathelement location="./temp" />
+	</path>
+
+	<target name="clean">
+		<delete dir="temp" />
+	</target>
+
+	<target name="compile">
+		<mkdir dir="temp" />
+		<javac srcdir="src" destdir="temp" source="1.6" target="1.6" debug="true">
+			<classpath refid="classpath" />
+			<include name="**/*.java" />
+		</javac>
+	</target>
+
+	<target name="jar">
+		<copy todir="temp">
+			<fileset dir="src">
+				<include name="**/WebContent/**" />
+				
+				 
+				
+			</fileset>
+			
+			    <fileset dir="src">
+								      <include name="**/*.properties"/>
+								    </fileset>
+			
+			
+		</copy>
+		
+		
+		<jar jarfile="PrintFaxActionPlugin.jar">
+			<fileset dir="./temp" includes="**/*" />
+			<manifest>
+				<attribute name="Plugin-Class" value="ibm.com.plugin.PrintFaxMainPlugin" />
+				<section name="build">
+					<attribute name="Built-By" value="${user.name}" />
+					<attribute name="Build" value="${TODAY}" />
+				</section>
+			</manifest>
+		</jar>
+		<delete dir="./temp" />
+	</target>
+
+</project>
