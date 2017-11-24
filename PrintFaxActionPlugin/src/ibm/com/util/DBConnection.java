@@ -33,25 +33,8 @@ String decryptpassword =null;
 	public Connection getConnection() {
 
 		
-		
-	java.util.Properties properties=new java.util.Properties();
-			
-			InputStream inputStreamprop=null;
-			try {
-				inputStreamprop = new FileInputStream("C://printfax/DBPropertyFile.properties");
-			} catch (FileNotFoundException e2) {
-				// TODO Auto-generated catch block
-				LOGGER.error("printStackTrace ocurred" + e2);
-			}
-			
-			try {
-				properties.load(inputStreamprop);
-			} catch (IOException e2) {
-				// TODO Auto-generated catch block
-			
-				
-				LOGGER.error("printStackTrace ocurred" + e2);
-			}
+		ResourceBundle resource = ResourceBundle.getBundle("ibm.com.properties.DBPropertyFile");
+	
 			
 		
 		PropertyConfigurator
@@ -61,7 +44,7 @@ String decryptpassword =null;
 
 		Connection connection = null;
 		
-		Password=properties.getProperty("password");
+		Password=resource.getString("password");
 		
 	
 		DBConnection conn=new DBConnection();
@@ -75,12 +58,12 @@ String decryptpassword =null;
 		}
 		
 		
-		 LOGGER.info("url+++++++++"+properties.getProperty("connectionurl")+";"+"user="+properties.getProperty("username")+";"+"password="+decryptpassword+";"+"database="+properties.getProperty("database"));
+		 LOGGER.info("url+++++++++"+resource.getString("connectionurl")+";"+"user="+resource.getString("username")+";"+"password="+decryptpassword+";"+"database="+resource.getString("database"));
 
 		try {
 
-			Class.forName(properties.getProperty("jdbcurl"));
-			connection = DriverManager.getConnection(properties.getProperty("connectionurl")+";"+"user="+properties.getProperty("username")+";"+"password="+decryptpassword+";"+"database="+properties.getProperty("database"));
+			Class.forName(resource.getString("jdbcurl"));
+			connection = DriverManager.getConnection(resource.getString("connectionurl")+";"+"user="+resource.getString("username")+";"+"password="+decryptpassword+";"+"database="+resource.getString("database"));
 
 			
 

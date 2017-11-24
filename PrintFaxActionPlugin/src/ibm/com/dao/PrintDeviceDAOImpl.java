@@ -1,9 +1,5 @@
 package ibm.com.dao;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Connection;
@@ -49,14 +45,9 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 	String insertsql = null;
 	String libraryname = null;
 	PreparedStatement preparedstatement = null;
-	InputStream inputStreamprop=null;
 
 	static final Logger LOGGER = Logger.getLogger(PrintDeviceDAOImpl.class);
-	
-	
-	java.util.Properties properties=new java.util.Properties();
-	
-	//ResourceBundle resource = ResourceBundle.getBundle("ibm.com.properties.DBPropertyFile");
+	ResourceBundle resource = ResourceBundle.getBundle("ibm.com.properties.DBPropertyFile");
 
 	DBConnection dbConnection = new DBConnection();
 
@@ -64,25 +55,8 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 
 	@Override
 	public JSONArray devicenamesretrival() {
-		
-		
 
-		try{
-		inputStreamprop = new FileInputStream("C://printfax/DBPropertyFile.properties");
-		
-		try {
-			properties.load(inputStreamprop);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			LOGGER.error("IOException ocurred" + e);
-		}
-		
-		}catch (FileNotFoundException e2) {
-			// TODO Auto-generated catch block
-			LOGGER.error("FileNotFoundException ocurred" + e2);
-		}
-
-		devicetypequery = properties.getProperty("queryfordevicetype");
+		devicetypequery = resource.getString("queryfordevicetype");
 
 		jsonArray = new JSONArray();
 
@@ -131,7 +105,7 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 
 	public String librarynameretrival() {
 
-		librarysql = properties.getProperty("queryforlibraryname");
+		librarysql = resource.getString("queryforlibraryname");
 
 		try {
 			Statementforlib = Connection.createStatement();
@@ -163,7 +137,7 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 		JSONArray mimetypearraylist = docValues.getMimetypearraylist();
 
 
-		insertsql = properties.getProperty("queryforinsertion");
+		insertsql = resource.getString("queryforinsertion");
 		java.sql.Date date = getCurrentJavaSqlDate();
 
 		try {
