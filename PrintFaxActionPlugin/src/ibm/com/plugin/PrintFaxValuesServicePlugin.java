@@ -86,12 +86,10 @@ public class PrintFaxValuesServicePlugin extends PluginService {
 	public void execute(PluginServiceCallbacks callbacks, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-		
-		
 		System.out.println("in service");
 		JSONArray jsonArray = new JSONArray();
 		JSONObject jsonObj = new JSONObject();
-		String result="Failed";
+		String result = "Failed";
 
 		try {
 
@@ -130,10 +128,8 @@ public class PrintFaxValuesServicePlugin extends PluginService {
 			JSONArray documentsidarraylist = JSONArray.parse(documentsidarray);
 			JSONArray mimetypearraylist = JSONArray.parse(mimetypearray);
 			JSONArray lastpagevaluesarray = JSONArray.parse(lastpagevalues);
-			
-			
-			System.out.println("lastpagevaluesarray"+lastpagevaluesarray);
 
+			System.out.println("lastpagevaluesarray" + lastpagevaluesarray);
 
 			/*
 			 * *********** Adding Values to printvlaues pojo class
@@ -198,21 +194,18 @@ public class PrintFaxValuesServicePlugin extends PluginService {
 
 			PrintFaxRequestType PrintFaxRequestxmltype = new PrintFaxRequestType();
 
-			PFS pfs = PrintFaxRequestxmltype.printvalues(printValues, faxValues,docValues);
-			
+			PFS pfs = PrintFaxRequestxmltype.printvalues(printValues, faxValues, docValues);
+
 			StringWriter writer = PrintFaxRequestxmltype.createXML(pfs);
-			
-			
-						 dao.Printrequestinsertion(writer,docValues);
-						
-						
 
-						jsonObj.put("printrequestinsertionvalue", "success");
-						result = "success";
-						jsonArray.add(jsonObj);
+			int valueafterinsertion = dao.Printrequestinsertion(writer, docValues);
 
-						PrintWriter responseWriter = response.getWriter();
-						responseWriter.write("{\"result\":" + jsonArray + "}");
+			jsonObj.put("printrequestinsertionvalue", valueafterinsertion);
+			// result = "success";
+			jsonArray.add(jsonObj);
+
+			PrintWriter responseWriter = response.getWriter();
+			responseWriter.write("{\"result\":" + jsonArray + "}");
 			responseWriter.flush();
 		} catch (Exception e) {
 			e.printStackTrace();

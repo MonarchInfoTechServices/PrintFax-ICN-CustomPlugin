@@ -666,7 +666,7 @@ define(
 														response) {
 
 												
-													if(response.result[0].printrequestinsertionvalue =="success"){
+													if(response.result[0].printrequestinsertionvalue =="1"){
 													th.destroy();
 
 													var messageDialog = new MessageDialog(
