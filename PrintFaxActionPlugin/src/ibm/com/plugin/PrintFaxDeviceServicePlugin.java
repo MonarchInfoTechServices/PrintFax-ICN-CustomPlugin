@@ -86,7 +86,7 @@ public class PrintFaxDeviceServicePlugin  extends PluginService {
 		
 		PrintDeviceDAO dao= new PrintDeviceDAOImpl();
 		
-		jsonArray=dao.devicenamesretrival();
+		jsonArray=dao.deviceNamesRetrieval();
 		
 		
 		PrintWriter responseWriter =  response.getWriter();

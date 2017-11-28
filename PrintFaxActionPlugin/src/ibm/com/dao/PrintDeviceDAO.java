@@ -12,10 +12,10 @@ import ibm.com.pojo.DocValues;
 
 public interface PrintDeviceDAO {
 	
-	public JSONArray devicenamesretrival() throws SQLException, NamingException;
-	public String librarynameretrival() throws SQLException, NamingException;
+	public JSONArray deviceNamesRetrieval() throws SQLException, NamingException;
+	public String libraryNamesRetrieval() throws SQLException, NamingException;
 
-	public int Printrequestinsertion(StringWriter writer, DocValues docValues) throws SQLException, NamingException ;
+	public int printRequestInsertion(StringWriter writer, DocValues docValues) throws SQLException, NamingException ;
 	
 	
 }

@@ -188,7 +188,7 @@ public class PrintFaxValuesServicePlugin extends PluginService {
 
 			PrintDeviceDAO dao = new PrintDeviceDAOImpl();
 
-			String libraryname = dao.librarynameretrival();
+			String libraryname = dao.libraryNamesRetrieval();
 
 			docValues.setLibraryname(libraryname);
 
@@ -198,7 +198,7 @@ public class PrintFaxValuesServicePlugin extends PluginService {
 
 			StringWriter writer = PrintFaxRequestxmltype.createXML(pfs);
 
-			int valueafterinsertion = dao.Printrequestinsertion(writer, docValues);
+			int valueafterinsertion = dao.printRequestInsertion(writer, docValues);
 
 			jsonObj.put("printrequestinsertionvalue", valueafterinsertion);
 			// result = "success";
