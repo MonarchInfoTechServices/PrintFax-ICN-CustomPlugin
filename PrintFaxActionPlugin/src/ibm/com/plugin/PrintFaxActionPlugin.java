@@ -36,7 +36,7 @@ public class PrintFaxActionPlugin extends PluginAction {
 	 * @return A short description of the action.
 	 */
 	public String getName(Locale locale) {
-		return "New Print/Fax Documents";
+		return "Print/Fax";
 	}
 
 	/**

@@ -25,7 +25,7 @@ public class DBConnection {
 
 		ResourceBundle resource = ResourceBundle.getBundle("ibm.com.properties.DBPropertyFile");
 
-		PropertyConfigurator
+	PropertyConfigurator
 		.configure(this.getClass().getClassLoader().getResource("ibm/com/properties/log4j.properties"));
 
 		Connection connection = null;

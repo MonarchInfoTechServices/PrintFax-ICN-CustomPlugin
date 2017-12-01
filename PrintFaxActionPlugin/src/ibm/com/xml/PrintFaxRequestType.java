@@ -1,6 +1,7 @@
 package ibm.com.xml;
 
 import java.io.StringWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,8 +12,8 @@ import java.util.ResourceBundle;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -25,8 +26,6 @@ import org.w3c.dom.Element;
 
 import com.ibm.json.java.JSONArray;
 
-import ibm.com.dao.PrintDeviceDAO;
-import ibm.com.dao.PrintDeviceDAOImpl;
 import ibm.com.pojo.DocValues;
 import ibm.com.pojo.FaxValues;
 import ibm.com.pojo.PrintValues;
@@ -43,7 +42,7 @@ public class PrintFaxRequestType {
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public PFS printvalues(PrintValues printValues, FaxValues faxValues, DocValues docValues)
+	public PFS printvalues(PrintValues printValues, FaxValues faxValues, DocValues docValues) throws SQLException
 			 {
 
 		 resource = ResourceBundle.getBundle("ibm.com.properties.XMLPropertyFile");
@@ -230,7 +229,7 @@ public class PrintFaxRequestType {
 			doc.setId(documentsidarraylist.get(i).toString());
 			Map docNodeMap = new HashMap();
 			docNodeMap.put(resource.getString("Library"), docValues.getLibraryname());
-			docNodeMap.put(resource.getString("MIMEType"), docValues.getMimetypearraylist().get(i).toString());
+			docNodeMap.put(resource.getString("MimeType"), docValues.getMimetypearraylist().get(i).toString());
 
 			if ("1".equalsIgnoreCase(startpagevalueAarray.get(i).toString())
 					&& "9999".equalsIgnoreCase(lastpagevaluesArray.get(i).toString())) {
@@ -257,6 +256,8 @@ public class PrintFaxRequestType {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			LOGGER.error("Exception ocurred" + e);
+			
+			throw new SQLException("Connection Failed"+e.getMessage());
 		}
 		return pfs;
 		
@@ -296,7 +297,8 @@ public class PrintFaxRequestType {
 		 writer = new StringWriter();
 		StreamResult result = new StreamResult(writer);
 		
-			transformer.transform(domSource, result);
+		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		transformer.transform(domSource, result);
 		
 		LOGGER.info("XML IN String format is: \n" + writer.toString());
 	

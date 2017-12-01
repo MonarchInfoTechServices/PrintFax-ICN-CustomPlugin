@@ -86,7 +86,7 @@ public class PrintFaxValuesServicePlugin extends PluginService {
 	public void execute(PluginServiceCallbacks callbacks, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-		System.out.println("in service");
+		
 		JSONArray jsonArray = new JSONArray();
 		JSONObject jsonObj = new JSONObject();
 		String result = "Failed";
@@ -98,6 +98,13 @@ public class PrintFaxValuesServicePlugin extends PluginService {
 			String repositoryId = request.getParameter("repositoryId");
 			String userId = request.getParameter("userId");
 			String printervalue = request.getParameter("printervalue");
+			
+			if("Printer".equalsIgnoreCase(printervalue)){
+				printervalue = "Print";
+			} else if ("Fax".equalsIgnoreCase(printervalue)){
+				printervalue = "Fax";
+			}
+			
 			String printfaxname = request.getParameter("printfaxname");
 			String papersize = request.getParameter("papersize");
 			String annotation = request.getParameter("annotation");
@@ -129,8 +136,7 @@ public class PrintFaxValuesServicePlugin extends PluginService {
 			JSONArray mimetypearraylist = JSONArray.parse(mimetypearray);
 			JSONArray lastpagevaluesarray = JSONArray.parse(lastpagevalues);
 
-			System.out.println("lastpagevaluesarray" + lastpagevaluesarray);
-
+			
 			/*
 			 * *********** Adding Values to printvlaues pojo class
 			 * **************
