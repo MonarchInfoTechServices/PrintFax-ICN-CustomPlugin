@@ -42,7 +42,7 @@ public class PrintFaxRequestType {
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public PFS printvalues(PrintValues printValues, FaxValues faxValues, DocValues docValues) throws SQLException
+	public PFS printvalues(PrintValues printValues, FaxValues faxValues, DocValues docValues) throws Exception
 			 {
 
 		 resource = ResourceBundle.getBundle("ibm.com.properties.XMLPropertyFile");
@@ -257,7 +257,7 @@ public class PrintFaxRequestType {
 			// TODO Auto-generated catch block
 			LOGGER.error("Exception ocurred" + e);
 			
-			throw new SQLException("Connection Failed"+e.getMessage());
+			throw new Exception("Error occured"+e.getMessage());
 		}
 		return pfs;
 		
