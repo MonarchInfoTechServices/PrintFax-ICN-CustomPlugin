@@ -47,6 +47,7 @@ define(
 			var copiescombobox;
 			var prioritycombobox;
 			var responsedata;
+			var printfaxname;
 	
 			var  flagList = [];
 
@@ -463,12 +464,13 @@ define(
 
 														});
 
-												console.log("ItemList",lastpagevaluefortiff)
+
+
 												if (flagList[ItemList]) {
 
 													for(i=0;i<lastpagevaluefortiff.length;i++){
 														
-														console.log("lastpagevaluefortiff",lastpagevaluefortiff[i])
+
 													lastTextBox
 															.set("value",
 																	lastpagevaluefortiff[i]);}
@@ -520,7 +522,7 @@ define(
 							{
 								for (var i = 0; i < checkboxarray.length; i++) {
 									
-									console.log("in for")
+									
 
 									checkboxarray[i].set("disabled", true);
 									checkboxarray[i].set("checked", true);
@@ -533,7 +535,7 @@ define(
 
 										for(j=0; j<lastpagevaluefortiff.length; j++){
 											
-											console.log("lastpagevaluefortiff",lastpagevaluefortiff[j])
+											
 										lastTextBox
 												.set("value",
 														lastpagevaluefortiff[j]);}
@@ -576,8 +578,9 @@ define(
 							mimetypearray = [];
 
 							var action = PrinterCombo.id;
-	                        var printervalue=PrinterCombo. item.id;
-							var printfaxname = PrinterCombo.value;
+	                        var printervalue=PrinterCombo.item.id;
+							 printfaxname = PrinterCombo.value;
+							
 							var papersize = papersizecombobox.value;
 						    var annotation = th.Annotation.checked;
 							for (var i = 0; i < starttextbox.length; i++) {
@@ -671,7 +674,7 @@ define(
 
 													var messageDialog = new MessageDialog(
 															{
-																text : "Print/Fax request submitted sucsessfully to:ImagePrinter",
+																text : "Print/Fax request submitted sucsessfully to:"+printfaxname
 
 															});
 													messageDialog.show();
@@ -700,4 +703,5 @@ define(
 
 					});
 		});
+
 

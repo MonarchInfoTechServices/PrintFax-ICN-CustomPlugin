@@ -54,7 +54,7 @@ public class PrintFaxRequestType {
 
 		if ("".equalsIgnoreCase(printValues.getPrintervalue())) {
 
-			req.setAction("");
+			req.setAction("\u200B");
 
 		} else {
 			req.setAction(printValues.getPrintervalue());
@@ -62,7 +62,7 @@ public class PrintFaxRequestType {
 
 		if ("".equalsIgnoreCase(printValues.getUserId())) {
 
-			req.setOwner("");
+			req.setOwner("\u200B");
 
 		} else {
 			req.setOwner(printValues.getUserId());
@@ -77,7 +77,7 @@ public class PrintFaxRequestType {
 
 		if ("".equalsIgnoreCase(faxValues.getTovalue())) {
 
-			faxMap.put(resource.getString("ToName"), "");
+			faxMap.put(resource.getString("ToName"), "\u200B");
 		} else {
 
 			faxMap.put(resource.getString("ToName"), faxValues.getTovalue());
@@ -85,7 +85,7 @@ public class PrintFaxRequestType {
 
 		if ("".equalsIgnoreCase(faxValues.getCompanyvalue())) {
 
-			faxMap.put(resource.getString("ToCompany"), "");
+			faxMap.put(resource.getString("ToCompany"), "\u200B");
 		} else {
 
 			faxMap.put(resource.getString("ToCompany"), faxValues.getCompanyvalue());
@@ -93,7 +93,7 @@ public class PrintFaxRequestType {
 
 		if ("".equalsIgnoreCase(faxValues.getFaxttovalue())) {
 
-			faxMap.put(resource.getString("ToFaxNumber"), "");
+			faxMap.put(resource.getString("ToFaxNumber"), "\u200B");
 		} else {
 
 			faxMap.put(resource.getString("ToFaxNumber"), faxValues.getFaxttovalue());
@@ -101,7 +101,7 @@ public class PrintFaxRequestType {
 
 		if ("".equalsIgnoreCase(faxValues.getPhonenovalue())) {
 
-			faxMap.put(resource.getString("ToPhoneNumber"), "");
+			faxMap.put(resource.getString("ToPhoneNumber"), "\u200B");
 		} else {
 
 			faxMap.put(resource.getString("ToPhoneNumber"), faxValues.getPhonenovalue());
@@ -109,7 +109,7 @@ public class PrintFaxRequestType {
 
 		if ("".equalsIgnoreCase(faxValues.getFaxfromvalue())) {
 
-			faxMap.put(resource.getString("FromName"), "");
+			faxMap.put(resource.getString("FromName"), "\u200B");
 		} else {
 
 			faxMap.put(resource.getString("FromName"), faxValues.getFaxfromvalue());
@@ -117,13 +117,13 @@ public class PrintFaxRequestType {
 
 		if ("".equalsIgnoreCase(faxValues.getFaxnovalue())) {
 
-			faxMap.put(resource.getString("FromFaxNumber"), "");
+			faxMap.put(resource.getString("FromFaxNumber"), "\u200B");
 		} else {
 
 			faxMap.put(resource.getString("FromFaxNumber"), faxValues.getFaxnovalue());
 		}
 
-		faxMap.put(resource.getString("FromPhoneNumber"), "");
+		faxMap.put(resource.getString("FromPhoneNumber"), "\u200B");
 		if ("true".equalsIgnoreCase(faxValues.getCoverPagevalue())) {
 			faxMap.put(resource.getString("CoverSheet"), "YES");
 		} else {
@@ -137,7 +137,7 @@ public class PrintFaxRequestType {
 
 		if ("".equalsIgnoreCase(faxValues.getNotesvalue())) {
 
-			faxMap.put(resource.getString("CoverSheetNotes"), "");
+			faxMap.put(resource.getString("CoverSheetNotes"), "\u200B");
 		} else {
 
 			faxMap.put(resource.getString("CoverSheetNotes"), faxValues.getNotesvalue());
@@ -147,7 +147,7 @@ public class PrintFaxRequestType {
 
 		if ("".equalsIgnoreCase(faxValues.getQualityvalue())) {
 
-			faxMap.put(resource.getString("Quality"), "");
+			faxMap.put(resource.getString("Quality"), "\u200B");
 		} else {
 
 			faxMap.put(resource.getString("Quality"), faxValues.getQualityvalue());
@@ -201,7 +201,7 @@ public class PrintFaxRequestType {
 
 		if ("".equalsIgnoreCase(printValues.getPrinttimevalue())) {
 
-			printMap.put(resource.getString("PrintTime"), "");
+			printMap.put(resource.getString("PrintTime"), "\u200B");
 		} else {
 
 			printMap.put(resource.getString("PrintTime"), printValues.getPrinttimevalue());
