@@ -12,7 +12,18 @@ public class DocValues {
 	JSONArray mimetypearraylist;
 	JSONArray lastpagevaluesarray ;
 	
+	String allPagesRadioValue;
 	String libraryname;
+	
+	public String getAllPagesRadioValue() {
+		return allPagesRadioValue;
+	}
+
+	public void setAllPagesRadioValue(String allPagesRadioValue) {
+		this.allPagesRadioValue = allPagesRadioValue;
+	}
+
+
 	public String getLibraryname() {
 		return libraryname;
 	}
@@ -66,12 +77,14 @@ public class DocValues {
 	public void setDocumentsidarraylist(JSONArray documentsidarraylist) {
 		this.documentsidarraylist = documentsidarraylist;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "DocValues [documentsidarraylist=" + documentsidarraylist + ", documentsarrayvalues="
 				+ documentsarrayvalues + ", startpagevaluesarray=" + startpagevaluesarray + ", mimetypearraylist="
-				+ mimetypearraylist + ", lastpagevaluesarray=" + lastpagevaluesarray + ", libraryname=" + libraryname
-				+ "]";
+				+ mimetypearraylist + ", lastpagevaluesarray=" + lastpagevaluesarray + ", allPagesRadioValue="
+				+ allPagesRadioValue + ", libraryname=" + libraryname + "]";
 	}
+	
+	
 	}

@@ -231,12 +231,17 @@ public class PrintFaxRequestType {
 			docNodeMap.put(resource.getString("Library"), docValues.getLibraryname());
 			docNodeMap.put(resource.getString("MimeType"), docValues.getMimetypearraylist().get(i).toString());
 
-			if ("1".equalsIgnoreCase(startpagevalueAarray.get(i).toString())
-					&& "9999".equalsIgnoreCase(lastpagevaluesArray.get(i).toString())) {
-
+	
+			
+			if("true".equalsIgnoreCase(docValues.getAllPagesRadioValue())){
+				
+				
 				docNodeMap.put(resource.getString("PageRange"), "All");
-
-			} else {
+				
+			}
+			
+			
+			else {
 				docNodeMap.put(resource.getString("PageRange"), docValues.getStartpagevaluesarray().get(i).toString() + "-"
 						+lastpagevaluesArray.get(i).toString());
 

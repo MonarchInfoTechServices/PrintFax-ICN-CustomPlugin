@@ -129,6 +129,7 @@ public class PrintFaxValuesServicePlugin extends PluginService {
 			String documentsidarray = request.getParameter("documentsidarray");
 			String mimetypearray = request.getParameter("mimetypearray");
 			String lastpagevalues = request.getParameter("lastpagevalues");
+			String allPagesRadioValue=request.getParameter("allPagesRadioValue");
 
 			JSONArray documentsarrayvalues = JSONArray.parse(documentsarray);
 			JSONArray startpagevaluesarray = JSONArray.parse(startpagevalues);
@@ -187,6 +188,8 @@ public class PrintFaxValuesServicePlugin extends PluginService {
 			docValues.setLastpagevaluesarray(lastpagevaluesarray);
 			docValues.setStartpagevaluesarray(startpagevaluesarray);
 			docValues.setMimetypearraylist(mimetypearraylist);
+		    docValues.setAllPagesRadioValue(allPagesRadioValue); 
+			
 
 			RequestValues requestValues = new RequestValues();
 

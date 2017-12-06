@@ -618,10 +618,20 @@ define(
 							var defalutRep = Desktop.getDefaultRepository();
 							repositoryId = defalutRep.repositoryId;
 							var userId = ecm.model.desktop.userId;
+							
+							
+							
+							var allPagesRadioValue= th.allpages.checked;
+							
+							
+							
+							
 
 							
 							var valuesforservice = {};
 
+							
+							valuesforservice.allPagesRadioValue=allPagesRadioValue;
 							valuesforservice.repositoryId = repositoryId;							
 							valuesforservice.printervalue=printervalue;
 							valuesforservice.printfaxname = printfaxname;
