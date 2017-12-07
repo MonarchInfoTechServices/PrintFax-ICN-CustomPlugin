@@ -24,11 +24,19 @@ define([
 
 		performAction: function(repository,itemList,listType,teamspace,resultSet,items)
 		{
+			
+			
+			console.log("itemList in js",itemList)
+			
 			try{   
 
 				var opendialog= new OpeningDialog();
 
-       opendialog.show(items, repository,itemList);
+       
+       
+      // opendialog.list(itemList);
+       opendialog.show(items, repository, itemList);
+       
        opendialog.setSize(800, 660);
  
 

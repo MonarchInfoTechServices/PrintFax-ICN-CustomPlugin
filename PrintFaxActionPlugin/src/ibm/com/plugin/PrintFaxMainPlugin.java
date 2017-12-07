@@ -203,7 +203,7 @@ public class PrintFaxMainPlugin extends Plugin {
 	 *         plug-in, the call should return an empty array.
 	 */
 	public PluginService[] getServices() {
-		return new com.ibm.ecm.extension.PluginService[]{new PrintFaxDeviceServicePlugin(), new PrintFaxValuesServicePlugin()};
+		return new com.ibm.ecm.extension.PluginService[]{new PrintFaxDeviceServicePlugin(), new PrintFaxValuesServicePlugin(),new ContentElementSizeService()};
 	}
 
 	/**

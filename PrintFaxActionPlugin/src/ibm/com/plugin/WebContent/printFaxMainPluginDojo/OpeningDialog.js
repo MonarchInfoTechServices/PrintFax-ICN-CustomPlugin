@@ -268,31 +268,81 @@ define(
 
 								}, Priority);
 
-							
-								lastpagevaluefortiff = [];
-								for (var i = 0; i < itemList.length; i++) {
-
+								
+								
+								tiffdocids = [];
+								docIdArr=[];
+								console.log(" Total Dcument selected",itemList.length);
+							for (var i = 0; i < itemList.length; i++) {
+								
 									var mimetype = itemList[i].mimetype;
-
-									var n = mimetype
-											.localeCompare("image/tiff");
-
-									if (n == 0) {
-										
-										flagTiff = true;
-										flagList[i] = flagTiff;
-
-										lastpagevaluefortiff
-												.push(itemList[i].attributes.ContentElementsPresent.length)
-
-									} else {
-										flagTiff = false;
-										flagList[i] = flagTiff;
-
-									}
-
+									var tiffdocumentsid=itemList[i].id;
+									var tifffragments = tiffdocumentsid.split(",");
+									var tifffinalid=tifffragments[tifffragments.length-1];
+									docIdArr.push(tifffinalid);
+								if(mimetype=="image/tiff"){
+								    tiffdocids.push(tifffinalid);
+									
 								}
+								}
+								
+							var tiffdocumentids = {};
+							
+							var defalutRep = Desktop.getDefaultRepository();
+							var repositoryIdfortiff = defalutRep.repositoryId;
+							
+							
+							
+							tiffdocumentids.repositoryIdfortiff=repositoryIdfortiff;
+							
+							tiffdocumentids.tiffdocids = JSON.stringify(tiffdocids);
 
+							var response = Request
+									.invokeSynchronousPluginService(
+											"PrintFaxMainPlugin",
+											"ContentElementSizeService",
+											tiffdocumentids);
+							
+							
+							
+							
+							console.log("response",response.result)
+							var responsefortiff=response.result
+
+							console.log(docIdArr);
+							console.log(responsefortiff);
+							console.log(responsefortiff.length);
+							docSizeArr= [];
+							for ( var j=0 ; j<docIdArr.length;j++ ){
+								console.log(j);
+								cFlag= false;
+								for(var k=0 ; k<responsefortiff.length;k++ )
+								{
+									console.log(k);
+									if(docIdArr[j]==responsefortiff[k].name){
+									// Tiff
+										docSizeArr.push(responsefortiff[k].id);
+									cFlag=true;
+										break;
+										
+									}
+									
+										
+								}
+								//Pdf
+								if(!cFlag)
+										docSizeArr.push(9999);
+										
+							}
+							console.log(" The Size Array is as ",docSizeArr );
+							
+							itemList.responsefortiff=responsefortiff;
+							
+							console.log("itemList response",itemList)
+								
+								
+							
+							
 								starttextbox = [];
 								lasttextboxarray = [];
 
@@ -308,7 +358,10 @@ define(
 									
 									docsarray.push(itemList[i].name);
 
-									docidsarray.push(itemList[i].docid);
+									var documentsid=itemList[i].id;
+									var fragments = documentsid.split(",");
+								    var finalid=fragments[fragments.length-1];
+									docidsarray.push(finalid);
 
 									mimetypesarray.push(itemList[i].mimetype);
 
@@ -466,22 +519,10 @@ define(
 
 
 
-												if (flagList[ItemList]) {
-
-													for(i=0;i<lastpagevaluefortiff.length;i++){
-														
-
-													lastTextBox
-															.set("value",
-																	lastpagevaluefortiff[i]);}
-
-												} else {
-
-													
-													lastTextBox.set("value",
-															9999);
-												}
-
+												lastTextBox.set("value",
+														docSizeArr[ItemList]);
+												
+						
 												lasttextboxarray
 														.push(lastTextBox);
 												return lastTextBox;
@@ -529,29 +570,9 @@ define(
 									starttextbox[i].set("disabled", true);
 									lasttextboxarray[i].set("disabled", true);
 									starttextbox[i].set("value", 1);
+									lasttextboxarray[i].set("value",docSizeArr[i]);
 									
 								
-									if (flagList[i]) {
-
-										for(j=0; j<lastpagevaluefortiff.length; j++){
-											
-											
-										lastTextBox
-												.set("value",
-														lastpagevaluefortiff[j]);}
-
-									} else {
-
-										
-										lastTextBox.set("value",
-												9999);
-									}
-
-									
-									
-									
-									
-									//lasttextboxarray[i].set("value", 9999);
 									
 									
 
