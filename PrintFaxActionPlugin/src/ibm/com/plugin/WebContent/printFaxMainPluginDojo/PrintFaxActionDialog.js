@@ -44,6 +44,8 @@ define([
        
        opendialog.setTitle("Print/Fax Dialog");
        
+       
+       
        opendialog.addButton("Submit", function() {
      
        opendialog.submit();
@@ -59,4 +61,7 @@ define([
 	     
 	        },
 	});
+		
+		opendialog.destroy();
+		
 });

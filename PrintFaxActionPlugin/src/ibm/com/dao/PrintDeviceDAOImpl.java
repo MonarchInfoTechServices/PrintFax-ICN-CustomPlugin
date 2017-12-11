@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import com.ibm.json.java.JSONArray;
 import com.ibm.json.java.JSONObject;
 import ibm.com.pojo.DocValues;
+import ibm.com.pojo.PrintValues;
 import ibm.com.util.DBConnection;
 
 /**
@@ -94,7 +95,7 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 	 * 
 	 */
 	public String libraryNamesRetrieval() throws SQLException, NamingException {
-		LOGGER.info("Entered in librarynameretrival method"+connection);
+	
 		librarySql = resource.getString("queryforlibraryname");
 		try {
 			connection = dbConnection.getConnection();
@@ -112,7 +113,7 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 			LOGGER.error("SQLException ocurred" + e);
 			throw new SQLException("Connection failed"+e.getMessage());
 		}
-		LOGGER.info("left from librarynameretrival method");
+	
 		return libraryName;
 
 	}
@@ -131,7 +132,7 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 	 * @ StringWriter
 	 * @ DocValues
 	 */
-	public int printRequestInsertion(StringWriter writer, DocValues docValues) throws SQLException, NamingException {
+	public int printRequestInsertion(StringWriter writer, DocValues docValues,PrintValues printValues) throws SQLException, NamingException {
 
 		JSONArray mimetypearraylist = docValues.getMimetypearraylist();
 		connection = dbConnection.getConnection();
@@ -146,7 +147,7 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 				preparedStatement.setInt(2, 2);
 				preparedStatement.setNString(3, writer.toString());
 				preparedStatement.setString(4, "NEW");
-				preparedStatement.setString(5, "P8admin");
+				preparedStatement.setString(5, printValues.getUserId());
 				preparedStatement.setDate(6, date);
 				preparedStatement.setDate(7, null);
 

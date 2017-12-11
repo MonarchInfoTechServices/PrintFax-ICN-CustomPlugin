@@ -207,7 +207,7 @@ public class PrintFaxValuesServicePlugin extends PluginService {
 
 			StringWriter writer = PrintFaxRequestxmltype.createXML(pfs);
 
-			int valueafterinsertion = dao.printRequestInsertion(writer, docValues);
+			int valueafterinsertion = dao.printRequestInsertion(writer, docValues,printValues);
 
 			jsonObj.put("printrequestinsertionvalue", valueafterinsertion);
 			// result = "success";

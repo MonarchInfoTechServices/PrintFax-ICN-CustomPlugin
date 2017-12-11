@@ -9,6 +9,7 @@ define(
 				"dojo/on",
 				"dojo/dom",
 				"dojo/json",
+				"dojo/dom-attr",
 				"dijit/form/Select",
 				"dijit/registry",
 				"dojo/data/ObjectStore",
@@ -26,7 +27,7 @@ define(
 				"dojo/text!printFaxMainPluginDojo/json/ChoicelistValues.json",
 				"dojo/domReady!" ],
 		function(declare, BaseDialog, _TemplatedMixin, _WidgetBase, domStyle,
-				on, dom, json, Select, registry, ObjectStore, ArrayList,
+				on, dom, json,domAttr, Select, registry, ObjectStore, ArrayList,
 				CheckBox, TextBox, Memory, ComboBox, array, Request, Desktop,
 				MessageDialog, _WidgetsInTemplateMixin, template, ChoicelistValues) {
 			var th;
@@ -48,8 +49,10 @@ define(
 			var prioritycombobox;
 			var responsedata;
 			var printfaxname;
-	
+			var ObjStore;
 			var  flagList = [];
+	        var docSizeArr;
+	        var docsarray;
 
 			return declare(
 					"printFaxMainPluginDojo.OpeningDialog",
@@ -272,7 +275,7 @@ define(
 								
 								tiffdocids = [];
 								docIdArr=[];
-								console.log(" Total Dcument selected",itemList.length);
+								
 							for (var i = 0; i < itemList.length; i++) {
 								
 									var mimetype = itemList[i].mimetype;
@@ -304,21 +307,15 @@ define(
 											tiffdocumentids);
 							
 							
-							
-							
-							console.log("response",response.result)
 							var responsefortiff=response.result
 
-							console.log(docIdArr);
-							console.log(responsefortiff);
-							console.log(responsefortiff.length);
 							docSizeArr= [];
 							for ( var j=0 ; j<docIdArr.length;j++ ){
-								console.log(j);
+								
 								cFlag= false;
 								for(var k=0 ; k<responsefortiff.length;k++ )
 								{
-									console.log(k);
+									
 									if(docIdArr[j]==responsefortiff[k].name){
 									// Tiff
 										docSizeArr.push(responsefortiff[k].id);
@@ -334,14 +331,8 @@ define(
 										docSizeArr.push(9999);
 										
 							}
-							console.log(" The Size Array is as ",docSizeArr );
 							
 							itemList.responsefortiff=responsefortiff;
-							
-							console.log("itemList response",itemList)
-								
-								
-							
 							
 								starttextbox = [];
 								lasttextboxarray = [];
@@ -386,9 +377,11 @@ define(
 									data : jsonArray
 								});
 
-								var ObjStore = new ObjectStore({
+								 ObjStore = new ObjectStore({
 									objectStore : documentsmemory
 								});
+								
+								var self = this;
 
 								var layout = [
 										{
@@ -421,27 +414,62 @@ define(
 															checked : true,
 
 															onClick : function() {
-
-																var checkboxid = ItemList;
-
 																
-
+																
+																var checkboxid = ItemList;
+																
 																if (this.checked == false) {
-
-																	starttextbox[checkboxid]
-																			.set(
-																					"disabled",
-																					false);
-
-																	lasttextboxarray[checkboxid]
-																			.set(
-																					"disabled",
-																					false);
+																	
+																	
+																	var checkboxvalues=[];
+																	
+																	
+																	checkboxvalues.push(starttextbox[checkboxid].id);
 																	
 
-																} else {
-
+													                 var rpt = starttextbox.length/docsarray.length;
+																	if(starttextbox.length > docsarray.length){
+																		// only for IE.. as IE sopmetimes repeat the datastore values.
+																		checkboxid = checkboxid + (rpt-1) * docsarray.length;
+																		
+																	}
 																	starttextbox[checkboxid]
+																			.set(
+																					"disabled",
+																					false);
+																	starttextbox[checkboxid]
+																	.set(
+																			"selectOnClick",
+																			true);
+																	starttextbox[checkboxid]
+																	.set(
+																			"focus",
+																			true);
+																	
+																	var starttextID = starttextbox[checkboxid].id;
+																	domAttr.get(starttextID, "unselectable");
+																domAttr.set(starttextID, "unselectable","off");
+																	
+																			lasttextboxarray[checkboxid]
+																			.set(
+																					"disabled",
+																					false);
+												                 domAttr.get(lasttextboxarray[checkboxid].id,"unselectable");
+																			
+																 domAttr.set(lasttextboxarray[checkboxid].id,"unselectable","off");
+																			
+																         
+																			
+																} else {
+																	
+																    var rpt = starttextbox.length/docsarray.length;
+																	if(starttextbox.length > docsarray.length){
+																		
+																		checkboxid = checkboxid + (rpt-1) * docsarray.length;
+																		
+																	}
+																	
+																starttextbox[checkboxid]
 																			.set(
 																					"disabled",
 																					true);
@@ -465,34 +493,44 @@ define(
 										},
 
 										{
-											name : 'Start Page',
-											'field' : 'classdescription',
-											'width' : '70px',
-											styles : "text-align: left;",
-											'formatter' : function(data) {
-
-												StartpageTextBox = new TextBox(
-														{
-
-															label : "TextBox",
-															style : {
-																width : '30%',
-																
-															},
-															value : "1",
-															styles : "text-align: center;",
-															disabled : true,
-															
-														});
-
-												starttextbox.push(StartpageTextBox);
-
+											
+												name : 'Start Page',
+												'field' : 'classdescription',
+												'width' : '70px',
 												
-												return StartpageTextBox;
+												styles : "text-align: left;",
+												'formatter' : function(data) {
 
-											}
+													StartpageTextBox = new dijit.form.ValidationTextBox(
+															{
 
-										},
+																label : "TextBox",
+																style : {
+																	width : '30%',
+																	
+																	
+															    
+																	
+																},
+																editable: true,
+																
+																value : "1",
+																styles : "text-align: center;",
+																disabled : true,
+																
+																
+															});
+												
+													
+													//(node, attr);
+													starttextbox.push(StartpageTextBox);
+													
+													
+													return StartpageTextBox;
+
+												}
+
+											},
 
 										{
 											name : 'Last Page',
@@ -525,6 +563,9 @@ define(
 						
 												lasttextboxarray
 														.push(lastTextBox);
+												
+												
+											
 												return lastTextBox;
 
 												
@@ -544,7 +585,9 @@ define(
 
 								}, documentgrid);
 								grid.startup();
-
+								
+								this._grid  = grid;
+							
 							
 							} catch (e) {
 
@@ -557,32 +600,46 @@ define(
 
 							
 							var allpagesradiovalue = this.allpages.checked;
+							
 
 							if (allpagesradiovalue == true)
 
 							{
-								for (var i = 0; i < checkboxarray.length; i++) {
-									
-									
-
-									checkboxarray[i].set("disabled", true);
-									checkboxarray[i].set("checked", true);
-									starttextbox[i].set("disabled", true);
-									lasttextboxarray[i].set("disabled", true);
-									starttextbox[i].set("value", 1);
-									lasttextboxarray[i].set("value",docSizeArr[i]);
-									
 								
+								for (var i = 0; i < docsarray.length; i++) {
 									
+									  var checkboxid=i;
+									 var rpt = checkboxarray.length/docsarray.length;
+										if(checkboxarray.length > docsarray.length){
+											// only for IE.. as IE sopmetimes repeat the datastore values.
+											checkboxid = checkboxid + (rpt-1) * docsarray.length;
+											
+										}
 									
-
+									checkboxarray[checkboxid].set("disabled", true);
+									checkboxarray[checkboxid].set("checked", true);
+									starttextbox[checkboxid].set("disabled", true);
+									lasttextboxarray[checkboxid].set("disabled", true);
+									starttextbox[checkboxid].set("value", 1);
+									
+									lasttextboxarray[checkboxid].set("value",docSizeArr[i]);
+									
 								}
 
 							} else {
 
-								for (var i = 0; i < checkboxarray.length; i++) {
+								for (var i = 0; i < docsarray.length; i++) {
+									
+									
+									  var checkboxid=i;
+										 var rpt = checkboxarray.length/docsarray.length;
+											if(checkboxarray.length > docsarray.length){
+												// only for IE.. as IE sopmetimes repeat the datastore values.
+												checkboxid = checkboxid + (rpt-1) * docsarray.length;
+												
+											}
 
-									checkboxarray[i].set("disabled", false);
+									checkboxarray[checkboxid].set("disabled", false);
 
 								}
 
@@ -604,10 +661,22 @@ define(
 							
 							var papersize = papersizecombobox.value;
 						    var annotation = th.Annotation.checked;
-							for (var i = 0; i < starttextbox.length; i++) {
+							for (var i = 0; i < docsarray.length; i++) {
 
-								startpagevalues.push(starttextbox[i].value);
-								lastpagevalues.push(lasttextboxarray[i].value);
+								
+								 var checkboxidlength=i;
+								 var rpt = checkboxarray.length/docsarray.length;
+									if(checkboxarray.length > docsarray.length){
+										// only for IE.. as IE sopmetimes repeat the datastore values.
+										checkboxidlength = checkboxidlength + (rpt-1) * docsarray.length;
+										
+									}
+								
+								
+								startpagevalues.push(starttextbox[checkboxidlength].value);
+								lastpagevalues.push(lasttextboxarray[checkboxidlength].value);
+								
+								
 								documentsarray
 										.push(grid.store.objectStore.data[i].name);
 
@@ -617,6 +686,8 @@ define(
 								mimetypearray.push(mimetypesarray[i]);
 
 							}
+							
+							
 							
 							
 							var ejecttrayvalue = ejecttraycombobox.value;
@@ -639,15 +710,8 @@ define(
 							var defalutRep = Desktop.getDefaultRepository();
 							repositoryId = defalutRep.repositoryId;
 							var userId = ecm.model.desktop.userId;
-							
-							
-							
+														
 							var allPagesRadioValue= th.allpages.checked;
-							
-							
-							
-							
-
 							
 							var valuesforservice = {};
 
@@ -734,5 +798,6 @@ define(
 
 					});
 		});
+
 
 

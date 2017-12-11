@@ -9,13 +9,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import com.ibm.json.java.JSONArray;
 
 import ibm.com.pojo.DocValues;
+import ibm.com.pojo.PrintValues;
 
 public interface PrintDeviceDAO {
 	
 	public JSONArray deviceNamesRetrieval() throws SQLException, NamingException;
 	public String libraryNamesRetrieval() throws SQLException, NamingException;
 
-	public int printRequestInsertion(StringWriter writer, DocValues docValues) throws SQLException, NamingException ;
+	public int printRequestInsertion(StringWriter writer, DocValues docValues, PrintValues printValues) throws SQLException, NamingException ;
 	
 	
 }
