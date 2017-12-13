@@ -398,7 +398,7 @@ define(
 
 								var layout = [
 										{
-											name : 'No',
+											name : 'No.',
 											field : 'id',
 											'width' : '50px',
 											styles : "text-align: left;"
