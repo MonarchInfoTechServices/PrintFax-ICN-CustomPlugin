@@ -7,6 +7,7 @@ define(
 				"dijit/_WidgetBase",
 				"dojo/dom-style",
 				"dojo/on",
+				"dojo/_base/lang",
 				"dojo/dom",
 				"dojo/json",
 				"dojo/dom-attr",
@@ -27,7 +28,7 @@ define(
 				"dojo/text!printFaxMainPluginDojo/json/ChoicelistValues.json",
 				"dojo/domReady!" ],
 		function(declare, BaseDialog, _TemplatedMixin, _WidgetBase, domStyle,
-				on, dom, json,domAttr, Select, registry, ObjectStore, ArrayList,
+				on,lang, dom, json,domAttr, Select, registry, ObjectStore, ArrayList,
 				CheckBox, TextBox, Memory, ComboBox, array, Request, Desktop,
 				MessageDialog, _WidgetsInTemplateMixin, template, ChoicelistValues) {
 			var th;
@@ -50,6 +51,7 @@ define(
 			var responsedata;
 			var printfaxname;
 			var ObjStore;
+			var orgObjStr;
 			var  flagList = [];
 	        var docSizeArr;
 	        var docsarray;
@@ -366,6 +368,13 @@ define(
 									jsonObj["id"] = i + 1;
 
 									jsonObj["name"] = docsarray[i];
+									jsonObj["valueCheck"] =true;
+									
+									jsonObj["lastpagevalues"] = docSizeArr[i];
+									
+									jsonObj["startpagevalues"] =1;
+									
+								
 
 									jsonArray.push(jsonObj);
 
@@ -377,15 +386,19 @@ define(
 									data : jsonArray
 								});
 
+								
+								
 								 ObjStore = new ObjectStore({
 									objectStore : documentsmemory
 								});
 								
+								// orgObjStr = lang.clone(ObjStore);
+								 
 								var self = this;
 
 								var layout = [
 										{
-											name : 'S.No',
+											name : 'No',
 											field : 'id',
 											'width' : '50px',
 											styles : "text-align: left;"
@@ -399,178 +412,34 @@ define(
 										},
 										{
 											name : 'All Pages',
-											field : 'property',
+											field : 'valueCheck',
 											'width' : '60px',
 											styles : "text-align: center;",
-
-											'formatter' : function(data,ItemList) {
-
-												allpagescheckbox = new CheckBox(
-														{
-
-															disabled : true,
-															name : "allpagesvalue",
-															label : "checkbox",
-															checked : true,
-
-															onClick : function() {
-																
-																
-																var checkboxid = ItemList;
-																
-																if (this.checked == false) {
-																	
-																	
-																	var checkboxvalues=[];
-																	
-																	
-																	checkboxvalues.push(starttextbox[checkboxid].id);
-																	
-
-													                 var rpt = starttextbox.length/docsarray.length;
-																	if(starttextbox.length > docsarray.length){
-																		// only for IE.. as IE sopmetimes repeat the datastore values.
-																		checkboxid = checkboxid + (rpt-1) * docsarray.length;
-																		
-																	}
-																	starttextbox[checkboxid]
-																			.set(
-																					"disabled",
-																					false);
-																	starttextbox[checkboxid]
-																	.set(
-																			"selectOnClick",
-																			true);
-																	starttextbox[checkboxid]
-																	.set(
-																			"focus",
-																			true);
-																	
-																	var starttextID = starttextbox[checkboxid].id;
-																	domAttr.get(starttextID, "unselectable");
-																domAttr.set(starttextID, "unselectable","off");
-																	
-																			lasttextboxarray[checkboxid]
-																			.set(
-																					"disabled",
-																					false);
-												                 domAttr.get(lasttextboxarray[checkboxid].id,"unselectable");
-																			
-																 domAttr.set(lasttextboxarray[checkboxid].id,"unselectable","off");
-																			
-																         
-																			
-																} else {
-																	
-																    var rpt = starttextbox.length/docsarray.length;
-																	if(starttextbox.length > docsarray.length){
-																		
-																		checkboxid = checkboxid + (rpt-1) * docsarray.length;
-																		
-																	}
-																	
-																starttextbox[checkboxid]
-																			.set(
-																					"disabled",
-																					true);
-																	lasttextboxarray[checkboxid]
-																			.set(
-																					"disabled",
-																					true);
-
-
-																}
-
-															}
-
-														});
-												checkboxarray.push(allpagescheckbox);
-
-												return allpagescheckbox;
-
-											}
-
+											type: dojox.grid.cells.Bool,
+											editable: true
+											
 										},
 
 										{
 											
 												name : 'Start Page',
-												'field' : 'classdescription',
+												'field' : 'startpagevalues',
 												'width' : '70px',
-												
 												styles : "text-align: left;",
-												'formatter' : function(data) {
-
-													StartpageTextBox = new dijit.form.ValidationTextBox(
-															{
-
-																label : "TextBox",
-																style : {
-																	width : '30%',
-																	
-																	
-															    
-																	
-																},
-																editable: true,
-																
-																value : "1",
-																styles : "text-align: center;",
-																disabled : true,
-																
-																
-															});
+												editable:"false",
+												singleClickEdit:"true"
 												
-													
-													//(node, attr);
-													starttextbox.push(StartpageTextBox);
-													
-													
-													return StartpageTextBox;
-
-												}
 
 											},
 
 										{
 											name : 'Last Page',
-											field : 'classdescription',
+											field : 'lastpagevalues',
 											'width' : '70px',
 											styles : "text-align: left;",
-											'formatter' : function(data,
-													ItemList) {
-
-												lastTextBox = new TextBox(
-														{
-															label : "lastTextBox",
-
-															disabled : true,
-
-															style : {
-																width : '50%',
-															
-															},
-
-															
-
-														});
-
-
-
-												lastTextBox.set("value",
-														docSizeArr[ItemList]);
-												
-						
-												lasttextboxarray
-														.push(lastTextBox);
-												
-												
+											editable:"false",
+											singleClickEdit:"true"
 											
-												return lastTextBox;
-
-												
-
-											}
 										}
 
 								];
@@ -586,64 +455,85 @@ define(
 								}, documentgrid);
 								grid.startup();
 								
-								this._grid  = grid;
+								th.grid  = grid;
+								
 							
-							
+								
+								//th.grid.getItem(inRowIndex).valueCheck = th.grid.getItem(inRowIndex).valueCheck;
+								th.grid.canEdit = function(inCell, inRowIndex) {
+									var rowCheck=th.grid.getItem(inRowIndex).valueCheck;
+									//console.log(rowCheck);
+									if(rowCheck){
+										
+										th.grid.getItem(inRowIndex).startpagevalues=1;
+										th.grid.getItem(inRowIndex).lastpagevalues=docSizeArr[inRowIndex];
+										
+										//starttextbox[checkboxid].set("value", 1);
+									}
+									
+									
+									if(inCell.index == 2 )
+									if(th.allpages.checked){
+									 return false;}
+									else {return true};
+
+
+									
+									
+									if((inCell.index == 3 || inCell.index == 4 ) && !rowCheck ){
+									
+										return true;
+									}
+									  else {
+									    return false;
+									}
+									};
 							} catch (e) {
 
 								console.log("", e);
-
 							}
 						},
 
 						onchangeradio : function() {
-
-							
 							var allpagesradiovalue = this.allpages.checked;
-							
-
-							if (allpagesradiovalue == true)
-
-							{
+							jsonArr=[];
+							if (allpagesradiovalue == true){
 								
 								for (var i = 0; i < docsarray.length; i++) {
-									
-									  var checkboxid=i;
-									 var rpt = checkboxarray.length/docsarray.length;
-										if(checkboxarray.length > docsarray.length){
-											// only for IE.. as IE sopmetimes repeat the datastore values.
-											checkboxid = checkboxid + (rpt-1) * docsarray.length;
-											
-										}
-									
-									checkboxarray[checkboxid].set("disabled", true);
-									checkboxarray[checkboxid].set("checked", true);
-									starttextbox[checkboxid].set("disabled", true);
-									lasttextboxarray[checkboxid].set("disabled", true);
-									starttextbox[checkboxid].set("value", 1);
-									
-									lasttextboxarray[checkboxid].set("value",docSizeArr[i]);
-									
-								}
+									var jsonObj = {};
 
-							} else {
+									jsonObj["id"] = i + 1;
 
-								for (var i = 0; i < docsarray.length; i++) {
+									jsonObj["name"] = docsarray[i];
+									jsonObj["valueCheck"] =true;
 									
+									jsonObj["lastpagevalues"] = docSizeArr[i];
 									
-									  var checkboxid=i;
-										 var rpt = checkboxarray.length/docsarray.length;
-											if(checkboxarray.length > docsarray.length){
-												// only for IE.. as IE sopmetimes repeat the datastore values.
-												checkboxid = checkboxid + (rpt-1) * docsarray.length;
-												
-											}
+									jsonObj["startpagevalues"] =1;
+									
+								
 
-									checkboxarray[checkboxid].set("disabled", false);
+									jsonArr.push(jsonObj);
 
 								}
+								
+								var orgMemory = new Memory({
+									data : jsonArr
+								});
+
+								var orgObjStr = new ObjectStore({
+									objectStore : orgMemory
+								});
+								
+							
+								//ObjStore = orgObjStr;
+								
+								th.grid.setStore(orgObjStr);
+								//console.log("updated the store",ObjStore);
+
 
 							}
+							
 
 						},
 
@@ -662,27 +552,11 @@ define(
 							var papersize = papersizecombobox.value;
 						    var annotation = th.Annotation.checked;
 							for (var i = 0; i < docsarray.length; i++) {
-
-								
-								 var checkboxidlength=i;
-								 var rpt = checkboxarray.length/docsarray.length;
-									if(checkboxarray.length > docsarray.length){
-										// only for IE.. as IE sopmetimes repeat the datastore values.
-										checkboxidlength = checkboxidlength + (rpt-1) * docsarray.length;
-										
-									}
-								
-								
-								startpagevalues.push(starttextbox[checkboxidlength].value);
-								lastpagevalues.push(lasttextboxarray[checkboxidlength].value);
-								
-								
+									startpagevalues.push(th.grid.getItem(i).startpagevalues);
+									lastpagevalues.push(th.grid.getItem(i).lastpagevalues);
 								documentsarray
-										.push(grid.store.objectStore.data[i].name);
-
+										.push(th.grid.store.objectStore.data[i].name);
 								documentsidarray.push(docidsarray[i]);
-
-								
 								mimetypearray.push(mimetypesarray[i]);
 
 							}
@@ -798,6 +672,17 @@ define(
 
 					});
 		});
+
+
+
+
+
+
+
+
+
+
+
 
 
 
