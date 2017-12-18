@@ -23,18 +23,7 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 
 	int tiffCounter = 0;
 	int mixedCounter = 0;
-	String deviceType = null;
-	String deviceName = null;
-	ResultSet result = null;
-	JSONArray jsonArray = null;
-	JSONObject jsonObj = null;
-	Statement statement = null;
-	String librarySql = null;
-	String deviceTypeQuery = null;
-	Statement StatementForLib = null;
-	ResultSet resultForLib = null;
-	String insertSql = null;
-	String libraryName = null;
+	
 	
 	/**
 	 * Default Constructor
@@ -43,15 +32,11 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 
 	}
 
-
-	PreparedStatement preparedStatement = null;
-
 	static final Logger LOGGER = Logger.getLogger(PrintDeviceDAOImpl.class);
 	ResourceBundle resource = ResourceBundle.getBundle("ibm.com.properties.DBPropertyFile");
 
 	DBConnection dbConnection = new DBConnection();
-	Connection connection =null;
-
+	
 	/* 
 	 * This is used to get Device names From Data Base
 	 * @
@@ -59,8 +44,20 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 	
 
 	public JSONArray deviceNamesRetrieval() throws SQLException, NamingException {
+		
+		ResultSet result = null;
+		Statement statement = null;
+		Connection connection =null;
+		JSONArray jsonArray = null;
+		JSONObject jsonObj = null;
+		String deviceType = null;
+		String deviceName = null;
+		String deviceTypeQuery = null;
+		
 		try {
 			connection = dbConnection.getConnection();
+			
+			
 			if(connection!=null){
 				deviceTypeQuery = resource.getString("queryfordevicetype");
 				jsonArray = new JSONArray();
@@ -86,7 +83,40 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 			LOGGER.error("SQLException ocurred" + e);
 			throw new SQLException("Connection Failed"+e.getMessage());
 		}
+		finally {
+			try{
+			if(result!=null){
+				result.close();}
+			
+			}catch (SQLException e) {
+				
+				LOGGER.error("SQLException ocurred while closing the result" + e.getMessage());
+				
+				throw new SQLException("SQLException ocurred while closing the result"+e.getMessage());
+			};
+			try{
+			if(statement!=null){
+				statement.close();
+			}
+			}catch (SQLException e) {
+				
+				LOGGER.error("SQLException ocurred while closing the statement" + e.getMessage());
+				
+				throw new SQLException("SQLException ocurred while closing the statement"+e.getMessage());
+			};
+		try{
+			if(connection!=null){
+				connection.close();
+				}
+		
+		}catch (SQLException e) {
+			
+			LOGGER.error("SQLException ocurred while closing the connection" + e.getMessage());
+			throw new SQLException("SQLException ocurred while closing the connection"+e.getMessage());
+			
+		};
 
+		}
 		return jsonArray;
 	}
 
@@ -95,7 +125,11 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 	 * 
 	 */
 	public String libraryNamesRetrieval() throws SQLException, NamingException {
-	
+		Statement StatementForLib = null;
+		Connection connection =null;
+		ResultSet resultForLib = null;
+		String librarySql = null;
+		String libraryName = null;
 		librarySql = resource.getString("queryforlibraryname");
 		try {
 			connection = dbConnection.getConnection();
@@ -112,6 +146,39 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 		} catch (SQLException e) {
 			LOGGER.error("SQLException ocurred" + e);
 			throw new SQLException("Connection failed"+e.getMessage());
+		}
+		finally {
+			try{
+			if(resultForLib!=null){
+				resultForLib.close();}
+			}catch (SQLException e) {
+				
+				LOGGER.error("SQLException ocurred while closing the resultForLib" + e.getMessage());
+				
+				throw new SQLException("SQLException ocurred while closing the resultForLib"+e.getMessage());
+			};
+			try{
+			if(StatementForLib!=null){
+			   StatementForLib.close();
+
+			}
+			}catch (SQLException e) {
+				
+				LOGGER.error("SQLException ocurred while closing the StatementForLib" + e.getMessage());
+				throw new SQLException("SQLException ocurred while closing the StatementForLib"+e.getMessage());
+				
+			};
+			try{
+			if(connection!=null){
+				connection.close();
+			}
+			}catch (SQLException e) {
+				
+				LOGGER.error("SQLException ocurred while closing the connection" + e.getMessage());
+				throw new SQLException("SQLException ocurred while closing the connection"+e.getMessage());
+				
+			};
+			
 		}
 	
 		return libraryName;
@@ -135,6 +202,9 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 	public int printRequestInsertion(StringWriter writer, DocValues docValues,PrintValues printValues) throws SQLException, NamingException {
 
 		JSONArray mimetypearraylist = docValues.getMimetypearraylist();
+		Connection connection =null;
+		String insertSql = null;
+		PreparedStatement preparedStatement = null;
 		connection = dbConnection.getConnection();
 		int executeUpdate = 0;
 		insertSql = resource.getString("queryforinsertion");
@@ -177,10 +247,27 @@ public class PrintDeviceDAOImpl implements PrintDeviceDAO {
 			throw new SQLException("Connection Failed"+e.getMessage());
 		}
 		finally {
-			if(connection!=null){
-				connection.close();
+			try{
+			if(preparedStatement!=null){
+				preparedStatement.close();
 			}
+			}catch (SQLException e) {
+				
+				LOGGER.error("SQLException ocurred while closing the preparedStatement" + e.getMessage());
+				
+				throw new SQLException("SQLException ocurred while closing the preparedStatement"+e.getMessage());
+			};
+			try{
+			if(connection!=null){
+				connection.close();}
+		
+		}catch (SQLException e) {
+			
+			LOGGER.error("SQLException ocurred while closing the connection" + e.getMessage());
+			
+			throw new SQLException("SQLException ocurred while closing the connection"+e.getMessage());
 		}
+		};
 		return executeUpdate;
 	}
 }

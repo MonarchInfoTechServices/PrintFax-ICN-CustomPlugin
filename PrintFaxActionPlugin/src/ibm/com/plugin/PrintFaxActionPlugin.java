@@ -52,7 +52,10 @@ public class PrintFaxActionPlugin extends PluginAction {
 	 * @return The name of the icon file.
 	 */
 	public String getIcon() {
-		return "";
+		
+		System.out.println("retrun the icomm");
+		
+		return "table_edit1";
 	}
 
 	/**

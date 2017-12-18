@@ -392,9 +392,8 @@ define(
 									objectStore : documentsmemory
 								});
 								
-								// orgObjStr = lang.clone(ObjStore);
-								 
-								var self = this;
+								
+								
 
 								var layout = [
 										{
@@ -459,16 +458,16 @@ define(
 								
 							
 								
-								//th.grid.getItem(inRowIndex).valueCheck = th.grid.getItem(inRowIndex).valueCheck;
+							
 								th.grid.canEdit = function(inCell, inRowIndex) {
 									var rowCheck=th.grid.getItem(inRowIndex).valueCheck;
-									//console.log(rowCheck);
+									
 									if(rowCheck){
 										
 										th.grid.getItem(inRowIndex).startpagevalues=1;
 										th.grid.getItem(inRowIndex).lastpagevalues=docSizeArr[inRowIndex];
 										
-										//starttextbox[checkboxid].set("value", 1);
+										
 									}
 									
 									
@@ -526,10 +525,10 @@ define(
 								});
 								
 							
-								//ObjStore = orgObjStr;
+								
 								
 								th.grid.setStore(orgObjStr);
-								//console.log("updated the store",ObjStore);
+								
 
 
 							}
@@ -545,6 +544,9 @@ define(
 							documentsidarray = [];
 							mimetypearray = [];
 
+							
+							var tovalue = th.to.value;						
+							var faxfromvalue = th.faxfrom.value;
 							var action = PrinterCombo.id;
 	                        var printervalue=PrinterCombo.item.id;
 							 printfaxname = PrinterCombo.value;
@@ -574,8 +576,7 @@ define(
 							var CoverPagevalue = th.CoverPage.checked;						
 							var qualityvalue = qualitycombobox.value;					
 							var faxttovalue = th.faxto.value;						
-							var tovalue = th.to.value;						
-							var faxfromvalue = th.faxfrom.value;					
+											
 							var phonenovalue = th.phoneno.value;
 							var companyvalue = th.company.value;							
 							var faxnovalue = th.faxno.value;							
